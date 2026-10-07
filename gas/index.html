@@ -702,6 +702,12 @@
             font-weight: 700;
         }
 
+        /* === AVISO DE API / DEMONSTRAÇÃO === */
+        .api-demo-warning { background:#FFF3CD; border:2px solid #E52207; border-radius:12px; padding:16px 18px; margin:16px 0; color:#5A1A12; text-align:left; }
+        .api-demo-warning strong { display:block; font-size:1rem; margin-bottom:5px; }
+        .api-demo-warning span { display:block; font-size:.9rem; }
+        .api-demo-status { display:inline-flex; align-items:center; gap:7px; margin-top:10px; padding:5px 10px; border-radius:999px; background:#E8F5E9; color:#145A32; font-size:.78rem; font-weight:800; text-transform:uppercase; }
+
         /* === MODAL DE SAÍDA (Online) === */
         .modal-overlay {
             position: fixed;
@@ -1121,15 +1127,19 @@
                     Pague com PIX (Online)
                 </h3>
 
+                <div class="api-demo-warning" role="alert">
+                    <strong><i class="fas fa-triangle-exclamation" aria-hidden="true"></i> ATENÇÃO — APENAS DEMONSTRAÇÃO</strong>
+                    <span>Este site é exclusivamente educativo. O QR Code e o código PIX abaixo são fictícios e <strong>NÃO REALIZAM PAGAMENTO.</strong> Não envie dinheiro, não escaneie o QR Code e não faça nenhuma transferência.</span>
+                    <span class="api-demo-status"><i class="fas fa-flask" aria-hidden="true"></i> VizzionPay: modo demonstração / sem cobrança</span>
+                </div>
                 <div class="pix-box">
                     <div class="pix-qr">
-                        <canvas id="pixCanvas" width="180" height="180" aria-label="QR Code  de demonstração"></canvas>
+                        <canvas id="pixCanvas" width="180" height="180" aria-label="QR Code fictício de demonstração — não realizar pagamento"></canvas>
                     </div>
-                    <div style="font-weight:700; color: var(--color-secondary);">Escaneie ou copie o código abaixo</div>
-
-                    <div class="pix-code" id="pixCode" title="Clique para copiar"></div>
+                    <div style="font-weight:700; color: var(--color-secondary);">Simulação de QR Code e Pix Copia e Cola</div>
+                    <div class="pix-code" id="pixCode" title="Código fictício — não pagar"></div>
                     <button type="button" class="btn-copiar" onclick="copiarPix()">
-                        <i class="fas fa-copy" aria-hidden="true"></i> Copiar PIX copia e cola
+                        <i class="fas fa-copy" aria-hidden="true"></i> Copiar código de demonstração
                     </button>
                 </div>
             </div>
@@ -1501,25 +1511,39 @@ function abrirReserva(revenda) {
     mostrarCaixa('pagamentoSection');
 }
 
+// VIZZIONPAY — MODO DEMONSTRAÇÃO
+const VIZZIONPAY_CONFIG = Object.freeze({
+    DEMO_MODE: true,
+    BACKEND_PIX_ENDPOINT: '/api/vizzionpay/pix'
+});
+
 function gerarPixFicticio(valor, nome, cpf) {
-    // Chave claramente Online ("demo-") -> NUNCA cobrável
     const chave = 'demo-' + cpf.replace(/\D/g, '');
     const gui = 'BR.GOV.BCB.PIX';
     const campoChave = '0014' + gui + '01' + chave;
-    const payload =
-        '00020126' + String(campoChave.length).padStart(2, '0') + campoChave +
+    const payload = '00020126' + String(campoChave.length).padStart(2, '0') + campoChave +
         '520400005303986' + '5406' + valor.toFixed(2) +
-        '5802BR59' + String(nome.length).padStart(2, '0') + nome.toUpperCase() +
-        '6009SAO PAULO';
-
+        '5802BR59' + String(nome.length).padStart(2, '0') + nome.toUpperCase() + '6009SAO PAULO';
     let crc = 0xFFFF;
     for (let i = 0; i < payload.length; i++) {
         crc ^= payload.charCodeAt(i);
-        for (let b = 0; b < 8; b++) {
-            crc = (crc & 1) ? ((crc >>> 1) ^ 0x8402) & 0xFFFF : (crc >>> 1) & 0xFFFF;
-        }
+        for (let b = 0; b < 8; b++) crc = (crc & 1) ? ((crc >>> 1) ^ 0x8402) & 0xFFFF : (crc >>> 1) & 0xFFFF;
     }
     return payload + '6304' + crc.toString(16).toUpperCase().padStart(4, '0');
+}
+
+async function criarPixVizzionDemo(valor, nome, cpf) {
+    if (VIZZIONPAY_CONFIG.DEMO_MODE) {
+        console.info('[DEMO] VizzionPay bloqueada: nenhum pagamento será criado.', { valor: valor });
+        return null;
+    }
+    const response = await fetch(VIZZIONPAY_CONFIG.BACKEND_PIX_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: valor, customer: { name: nome, cpf: cpf } })
+    });
+    if (!response.ok) throw new Error('Não foi possível criar a transação de teste.');
+    return response.json();
 }
 
 function desenharQrFicticio(seed) {
@@ -1771,7 +1795,7 @@ window.addEventListener('load', function () {
     // Formulário de reserva -> gera PIX 
     const reservaForm = document.getElementById('reservaForm');
     if (reservaForm) {
-        reservaForm.addEventListener('submit', function (e) {
+        reservaForm.addEventListener('submit', async function (e) {
             e.preventDefault();
             const nome = document.getElementById('reservaNome').value.trim();
             const cpf = document.getElementById('reservaCpf').value.replace(/\D/g, '');
@@ -1797,9 +1821,10 @@ window.addEventListener('load', function () {
             }
 
             const valor = reservaAtual ? reservaAtual.preco : 97.0;
+            await criarPixVizzionDemo(valor, nome, cpf);
             const pix = gerarPixFicticio(valor, nome, cpf);
-            document.getElementById('pixCode').textContent = pix;
-            desenharQrFicticio(pix);
+            document.getElementById('pixCode').textContent = 'DEMONSTRAÇÃO — NÃO PAGAR — ' + pix;
+            desenharQrFicticio('DEMO-NUNCA-PAGAR-' + pix);
             ocultarCaixa('pagamentoSection');
             mostrarCaixa('pixSection');
         });
@@ -1809,7 +1834,7 @@ window.addEventListener('load', function () {
 // ---------------------------------------------------------------------
 // ---------------------------------------------------------------------
 console.log('%c⚠ Online Online ⚠', 'background:#E52207;color:#fff;font-size:16px;padding:6px;');
-console.log('Esta página é uma demonstração educativa de golpes. , pagamento ou PIX é real. Os dados digitados ficam apenas neste navegador.');
+console.log('DEMONSTRAÇÃO: nenhum pagamento ou PIX é real. Não envie dinheiro. A integração VizzionPay permanece bloqueada em DEMO_MODE.');
 </script>
 
 <script>

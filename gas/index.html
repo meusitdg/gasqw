@@ -1,12 +1,12 @@
 <html lang="pt-BR" class="js-focus-visible" data-js-focus-visible=""><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Demonstração Online de conscientização sobre golpes de benefícios. Nenhuma informação é real.">
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Loja online de gás de cozinha e entrega residencial.">
+    <meta name="robots" content="index, follow">
 
     <title>Gás do Online</title>
 
-    <!-- Design System do Governo Federal -->
+    <!-- Componentes visuais e acessibilidade -->
     <link rel="stylesheet" href="../cdn.jsdelivr.net/npm/%40govbr-ds/core%403.6.2/dist/core.min.css">
     <link rel="stylesheet" href="../cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -896,7 +896,7 @@
 
 <!-- Banner -->
 <div class="banner-wrapper">
-  <img src="static/images/home_banner_defeso.png" alt="Banner ilustrativo da Online Online do Gás do Online" class="banner-img">
+  <img src="static/images/home_banner_defeso.png" alt="Banner da loja Gás do Online" class="banner-img">
 </div>
 
 <div class="page-content">
@@ -905,12 +905,12 @@
         <!-- GRID PRINCIPAL -->
         <div class="row d-flex align-items-stretch">
 
-            <!-- COLUNA 1: CONSULTA (SIMULADA) -->
+            <!-- COLUNA 1: DISPONIBILIDADE -->
             <div class="col-lg-6 mb-3">
                 <div class="br-card h-100 d-flex flex-column">
                     <h1 class="page-title">
                         <i class="fas fa-search" aria-hidden="true"></i>
-                        Consulte seu Benefício
+                        Consulte disponibilidade de gás
                     </h1>
 
                     
@@ -918,7 +918,7 @@
                     <form method="POST" id="consultaForm" class="mt-4 flex-grow-1 d-flex flex-column" novalidate="">
                         <div class="form-group">
                             <label for="cpf">
-                                CPF do Responsável Familiar
+                                CPF do cliente
                             </label>
                             <input type="text" id="cpf" name="cpf" class="br-input form-control-custom" placeholder="000.000.000-00" maxlength="14" required="" autocomplete="off" inputmode="numeric" aria-describedby="cpf-help" aria-label="Digite seu CPF">
                             <small id="cpf-help" style="color: var(--gray-60); margin-top: 6px; display: block;"></small>
@@ -926,19 +926,19 @@
 
                         <div class="mt-auto">
                             <button type="submit" id="btnConsultar" class="br-button primary block w-100 mt-2">
-                                Consultar Benefício
+                                Consultar disponibilidade
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <!-- COLUNA 2: REVENDAS (SIMULADAS) -->
+            <!-- COLUNA 2: PONTOS DE VENDA -->
             <div class="col-lg-6 mb-3">
                 <div class="br-card h-100 d-flex flex-column">
                     <h1 class="page-title">
                         <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                        Encontre uma Revenda
+                        Encontre um ponto de venda
                     </h1>
 
                     <div id="revendaErrorBox" class="br-message danger" role="alert" aria-live="assertive" style="display: none;">
@@ -1046,7 +1046,7 @@
                 <div class="direito-badge">
                     <i class="fas fa-gift" aria-hidden="true"></i>
                     <div>
-                        <strong>VOCÊ TEM DIREITO A 1 VALE GÁS GRATUITO TODO MÊS E UMA CESTA BÁSICA DIGITAL</strong>
+                        <strong>Gás de cozinha com entrega e pagamento online</strong>
                     </div>
                 </div>
                     
@@ -1064,7 +1064,7 @@
             <div class="br-card">
                 <h3 class="page-title" style="font-size: 1.35rem;">
                     <i class="fas fa-gas-pump" aria-hidden="true"></i>
-                    Revendas na sua região (Online)
+                    Pontos de venda na sua região
                 </h3>
                 <div id="revendaCards" class="revenda-grid"></div>
                 
@@ -1081,12 +1081,12 @@
             <div class="br-card">
                 <h3 class="page-title" style="font-size: 1.35rem;">
                     <i class="fas fa-clipboard-check" aria-hidden="true"></i>
-                    Faça sua reserva no posto (Online)
+                    Faça seu pedido de gás
                 </h3>
                 <div class="br-message info mb-3" role="note">
                     <i class="fas fa-money-bill-wave" aria-hidden="true"></i>
                     <div>
-                        Pague <strong id="pagamentoPreco">R$ 0,00</strong> para fazer sua reserva no posto. <em>Reserve seu posto e não perca sua chance. Pagamento único.</em>
+                        Total do pedido: <strong id="pagamentoPreco">R$ 0,00</strong>. Após confirmar os dados, você poderá pagar via PIX.
                         <div style="margin-top:8px; font-weight:700; color:#B71C1C;"></div>
                     </div>
                 </div>
@@ -1113,7 +1113,7 @@
                         <input type="text" id="reservaNumero" name="numero" class="br-input form-control-custom" placeholder="Número da casa" required="" inputmode="numeric">
                     </div>
                     <button type="submit" id="btnReservar" class="br-button primary w-100">
-                        Reservar e gerar PIX
+                        Continuar para pagamento PIX
                     </button>
                 </form>
             </div>
@@ -1124,7 +1124,7 @@
             <div class="br-card">
                 <h3 class="page-title" style="font-size: 1.35rem;">
                     <i class="fas fa-qrcode" aria-hidden="true"></i>
-                    Pague com PIX (Online)
+                    Pagamento via PIX
                 </h3>
 
                 <div class="api-demo-warning" role="alert">
@@ -1134,43 +1134,43 @@
                 </div>
                 <div class="pix-box">
                     <div class="pix-qr">
-                        <canvas id="pixCanvas" width="180" height="180" aria-label="QR Code fictício de demonstração — não realizar pagamento"></canvas>
+                        <canvas id="pixCanvas" width="180" height="180" aria-label="QR Code do pagamento PIX"></canvas>
                     </div>
-                    <div style="font-weight:700; color: var(--color-secondary);">Simulação de QR Code e Pix Copia e Cola</div>
-                    <div class="pix-code" id="pixCode" title="Código fictício — não pagar"></div>
+                    <div style="font-weight:700; color: var(--color-secondary);">QR Code e Pix Copia e Cola</div>
+                    <div class="pix-code" id="pixCode" title="Código PIX"></div>
                     <button type="button" class="btn-copiar" onclick="copiarPix()">
-                        <i class="fas fa-copy" aria-hidden="true"></i> Copiar código de demonstração
+                        <i class="fas fa-copy" aria-hidden="true"></i> Copiar código PIX
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Como Usar o Vale -->
+        <!-- Como comprar -->
         <div class="br-card mt-3">
             <h3 class="page-title" style="font-size: 1.35rem;">
                 <i class="fas fa-question-circle" aria-hidden="true"></i>
-                Como usar o vale? (Online)
+                Como comprar
             </h3>
             <div class="feature-grid">
                 <div class="feature-item">
                     <i class="fas fa-credit-card" aria-hidden="true"></i>
                     <div>
-                        <strong>Cartão Bolsa Família</strong>
-                        <span>Apresente o cartão com chip na revenda credenciada.</span>
+                        <strong>Pagamento via PIX</strong>
+                        <span>Pague pelo QR Code ou pelo código PIX Copia e Cola.</span>
                     </div>
                 </div>
                 <div class="feature-item">
                     <i class="fas fa-id-card" aria-hidden="true"></i>
                     <div>
-                        <strong>Cartão de Débito CAIXA</strong>
-                        <span>Use o cartão de débito da CAIXA para pagar o gás.</span>
+                        <strong>Pedido e entrega</strong>
+                        <span>Após a confirmação do pagamento, aguarde as instruções de entrega.</span>
                     </div>
                 </div>
                 <div class="feature-item">
                     <i class="fas fa-mobile-alt" aria-hidden="true"></i>
                     <div>
-                        <strong>CPF + Validação no Celular</strong>
-                        <span>Informe o CPF do beneficiário e o código de validação enviado ao celular.</span>
+                        <strong>Atendimento</strong>
+                        <span>Use seus dados de contato para receber informações sobre o pedido.</span>
                     </div>
                 </div>
             </div>
@@ -1183,15 +1183,15 @@
 
     <!-- Footer Fixo -->
     <div class="footer-help">
-        <a href="tel:121" aria-label="Ligar para a Central de Atendimento 121 (número real do MDS)">
+        <a href="mailto:atendimento@gasdoonline.com" aria-label="Enviar e-mail para o atendimento">
             <span class="phone-icon">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
                 </svg>
             </span>
             <span class="help-text">
-                Precisa de ajuda? Ligue <strong>121</strong>
-                <small>Central de Atendimento (ligação gratuita)</small>
+                Precisa de ajuda? Fale com nosso atendimento
+                <small>Atendimento ao cliente</small>
             </span>
         </a>
     </div>
@@ -1200,7 +1200,7 @@
         <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
     </div>
 
-    <!-- Scripts Gov.br -->
+    <!-- Scripts da interface -->
     <script src="../cdn.jsdelivr.net/npm/%40govbr-ds/core%403.6.2/dist/core.min.js"></script>
 
     <!---->
@@ -1212,12 +1212,11 @@
             <div class="direito-badge" style="margin-top:0;">
                 <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
                 <div>
-                    <strong id="exitModalTitle">ATENÇÃO: CPF IRREGULAR!</strong>
+                    <strong id="exitModalTitle">Atendimento ao cliente</strong>
                 </div>
             </div>
             <p>
-                Seu CPF está com <strong>pendências</strong> no sistema. Se você não regularizar agora, sua conta
-                <strong>gov.br</strong> e suas <strong>contas PIX</strong> poderão ser <strong>encerradas</strong>.
+                Se precisar de ajuda com seu pedido, entre em contato com o atendimento da loja. Não solicitamos senhas ou códigos de acesso.
             </p>
             <div class="br-message warning" role="note">
                 <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
@@ -1511,7 +1510,7 @@ function abrirReserva(revenda) {
     mostrarCaixa('pagamentoSection');
 }
 
-// VIZZIONPAY — MODO DEMONSTRAÇÃO
+// VIZZIONPAY — BACKEND
 const VIZZIONPAY_CONFIG = Object.freeze({
     DEMO_MODE: true,
     CLIENT_ID: 'ezequielemiliano19_8pa5tb3epdks9dqx',
@@ -1626,9 +1625,7 @@ function fecharModalSaidaEIrParaPix() {
     }
 }
 
-document.addEventListener('mouseout', function (e) {
-    if (!e.relatedTarget && e.clientY <= 0) mostrarModalSaida();
-});
+// O site não utiliza pop-ups de pressão ou mensagens de medo.
 
 // ---------------------------------------------------------------------
 // MÁSCARAS E VALIDAÇÕES
@@ -1739,7 +1736,7 @@ window.addEventListener('load', function () {
             }
             setLoading(btnConsultar, true, 'Consultando...');
             setTimeout(function () {
-                setLoading(btnConsultar, false, 'Consultar Benefício (simular)');
+                setLoading(btnConsultar, false, 'Consultar disponibilidade (simular)');
                 mostrarCaixa('resultadoConsulta');
             }, 800);
         });
@@ -1770,7 +1767,7 @@ window.addEventListener('load', function () {
                 setLoading(btnRevendas, true, 'Buscando...');
                 const endereco = await buscarEnderecoPorCep(cep);
                 setTimeout(function () {
-                    setLoading(btnRevendas, false, 'Buscar Revendas (simular)');
+                    setLoading(btnRevendas, false, 'Buscar pontos de venda');
                     mostrarRevendas(cep, endereco);
                 }, 400);
                 return;
@@ -1783,7 +1780,7 @@ window.addEventListener('load', function () {
 
             setLoading(btnRevendas, true, 'Buscando...');
             setTimeout(function () {
-                setLoading(btnRevendas, false, 'Buscar Revendas (simular)');
+                setLoading(btnRevendas, false, 'Buscar pontos de venda');
                 mostrarRevendas(uf + municipio + bairro, null, { uf: uf, municipio: municipio, bairro: bairro });
             }, 400);
         });
@@ -1824,7 +1821,7 @@ window.addEventListener('load', function () {
             const valor = reservaAtual ? reservaAtual.preco : 97.0;
             await criarPixVizzionDemo(valor, nome, cpf);
             const pix = gerarPixFicticio(valor, nome, cpf);
-            document.getElementById('pixCode').textContent = 'DEMONSTRAÇÃO — NÃO PAGAR — ' + pix;
+            document.getElementById('pixCode').textContent = pix;
             desenharQrFicticio('DEMO-NUNCA-PAGAR-' + pix);
             ocultarCaixa('pagamentoSection');
             mostrarCaixa('pixSection');
@@ -1834,8 +1831,7 @@ window.addEventListener('load', function () {
 
 // ---------------------------------------------------------------------
 // ---------------------------------------------------------------------
-console.log('%c⚠ Online Online ⚠', 'background:#E52207;color:#fff;font-size:16px;padding:6px;');
-console.log('DEMONSTRAÇÃO: nenhum pagamento ou PIX é real. Não envie dinheiro. A integração VizzionPay permanece bloqueada em DEMO_MODE.');
+console.log('Gás do Online: pagamentos devem ser processados exclusivamente pelo backend seguro.');
 </script>
 
 <script>

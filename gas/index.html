@@ -1101,6 +1101,10 @@
                         <input type="text" id="reservaCpf" name="cpf" class="br-input form-control-custom" placeholder="000.000.000-00" maxlength="14" required="" inputmode="numeric" onkeyup="validarCpfReserva(this)">
                     </div>
                     <div class="form-group">
+                        <label for="reservaEmail">E-mail</label>
+                        <input type="email" id="reservaEmail" name="email" class="br-input form-control-custom" placeholder="voce@exemplo.com" required="" autocomplete="email">
+                    </div>
+                    <div class="form-group">
                         <label for="reservaTel">Telefone</label>
                         <input type="tel" id="reservaTel" name="telefone" class="br-input form-control-custom" placeholder="(00) 00000-0000" maxlength="15" required="" inputmode="tel" onkeyup="mascaraTelReserva(this)">
                     </div>
@@ -1127,14 +1131,17 @@
                     Pagamento via PIX
                 </h3>
 
-                <div class="api-demo-warning" role="alert">
-                    <strong><i class="fas fa-triangle-exclamation" aria-hidden="true"></i> ATENÇÃO — APENAS DEMONSTRAÇÃO</strong>
-                    <span>Este site é exclusivamente educativo. O QR Code e o código PIX abaixo são fictícios e <strong>NÃO REALIZAM PAGAMENTO.</strong> Não envie dinheiro, não escaneie o QR Code e não faça nenhuma transferência.</span>
-                    <span class="api-demo-status"><i class="fas fa-flask" aria-hidden="true"></i> VizzionPay: modo demonstração / sem cobrança</span>
+                <div id="pixStatusBox" class="br-message info" role="status">
+                    <i class="fas fa-clock" aria-hidden="true"></i>
+                    <div>
+                        <strong>PIX gerado.</strong>
+                        <div id="pixStatusText">Aguardando confirmação do pagamento...</div>
+                    </div>
                 </div>
                 <div class="pix-box">
                     <div class="pix-qr">
-                        <canvas id="pixCanvas" width="180" height="180" aria-label="QR Code do pagamento PIX"></canvas>
+                        <img id="pixImage" src="" alt="QR Code do pagamento PIX" width="180" height="180" style="display:none; width:180px; height:180px; object-fit:contain;">
+                        <canvas id="pixCanvas" width="180" height="180" aria-label="QR Code do pagamento PIX" style="display:none;"></canvas>
                     </div>
                     <div style="font-weight:700; color: var(--color-secondary);">QR Code e Pix Copia e Cola</div>
                     <div class="pix-code" id="pixCode" title="Código PIX"></div>
@@ -1512,9 +1519,10 @@ function abrirReserva(revenda) {
 
 // VIZZIONPAY — BACKEND
 const VIZZIONPAY_CONFIG = Object.freeze({
-    DEMO_MODE: true,
+    DEMO_MODE: false,
     CLIENT_ID: 'ezequielemiliano19_8pa5tb3epdks9dqx',
-    BACKEND_PIX_ENDPOINT: '/api/vizzionpay/pix'
+    BACKEND_PIX_ENDPOINT: '/api/vizzionpay/pix',
+    STATUS_ENDPOINT: '/api/vizzionpay/status'
 });
 
 function gerarPixFicticio(valor, nome, cpf) {
@@ -1532,18 +1540,94 @@ function gerarPixFicticio(valor, nome, cpf) {
     return payload + '6304' + crc.toString(16).toUpperCase().padStart(4, '0');
 }
 
-async function criarPixVizzionDemo(valor, nome, cpf) {
-    if (VIZZIONPAY_CONFIG.DEMO_MODE) {
-        console.info('[DEMO] VizzionPay bloqueada: nenhum pagamento será criado.', { valor: valor });
-        return null;
-    }
+async function criarPixVizzion(valor, dados) {
     const response = await fetch(VIZZIONPAY_CONFIG.BACKEND_PIX_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: valor, customer: { name: nome, cpf: cpf } })
+        body: JSON.stringify({
+            amount: Number(valor.toFixed(2)),
+            name: dados.nome,
+            email: dados.email,
+            phone: dados.tel,
+            document: dados.cpf,
+            products: [{
+                id: 'gas-delivery',
+                name: 'Gás de cozinha',
+                quantity: 1,
+                price: Number(valor.toFixed(2)),
+                physical: true
+            }]
+        })
     });
-    if (!response.ok) throw new Error('Não foi possível criar a transação de teste.');
-    return response.json();
+
+    const raw = await response.text();
+    let data = null;
+    try { data = raw ? JSON.parse(raw) : null; } catch (_) {}
+
+    if (!response.ok) {
+        const msg = data && (data.error || data.message)
+            ? (data.error || data.message)
+            : ('Erro HTTP ' + response.status);
+        throw new Error(msg);
+    }
+
+    if (!data || !data.pix || !data.pix.code) {
+        throw new Error('A VizzionPay não retornou um código PIX válido.');
+    }
+
+    return data;
+}
+
+async function consultarStatusPix(identifier) {
+    const response = await fetch(VIZZIONPAY_CONFIG.STATUS_ENDPOINT + '?identifier=' + encodeURIComponent(identifier), {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' }
+    });
+
+    const raw = await response.text();
+    let data = null;
+    try { data = raw ? JSON.parse(raw) : null; } catch (_) {}
+
+    if (!response.ok) {
+        throw new Error(data && (data.error || data.message) ? (data.error || data.message) : ('Erro HTTP ' + response.status));
+    }
+
+    return data;
+}
+
+let pixStatusTimer = null;
+
+function iniciarMonitoramentoPix(identifier) {
+    if (pixStatusTimer) clearInterval(pixStatusTimer);
+
+    pixStatusTimer = setInterval(async function () {
+        try {
+            const data = await consultarStatusPix(identifier);
+            const status = String(
+                data?.status ||
+                data?.transaction?.status ||
+                data?.transactionStatus ||
+                ''
+            ).toUpperCase();
+
+            if (status === 'COMPLETED') {
+                clearInterval(pixStatusTimer);
+                pixStatusTimer = null;
+                document.getElementById('pixStatusBox').className = 'br-message success';
+                document.getElementById('pixStatusText').textContent = 'Pagamento confirmado. Seu pedido foi recebido.';
+                return;
+            }
+
+            if (['FAILED', 'REFUNDED', 'CHARGED_BACK', 'EXPIRED'].includes(status)) {
+                clearInterval(pixStatusTimer);
+                pixStatusTimer = null;
+                document.getElementById('pixStatusBox').className = 'br-message danger';
+                document.getElementById('pixStatusText').textContent = 'Status do PIX: ' + status;
+            }
+        } catch (err) {
+            console.warn('Não foi possível consultar o status do PIX:', err);
+        }
+    }, 5000);
 }
 
 function desenharQrFicticio(seed) {
@@ -1795,43 +1879,86 @@ window.addEventListener('load', function () {
     if (reservaForm) {
         reservaForm.addEventListener('submit', async function (e) {
             e.preventDefault();
+
+            const btn = document.getElementById('btnReservar');
             const nome = document.getElementById('reservaNome').value.trim();
             const cpf = document.getElementById('reservaCpf').value.replace(/\D/g, '');
+            const email = document.getElementById('reservaEmail').value.trim();
             const tel = document.getElementById('reservaTel').value.trim();
             const rua = document.getElementById('reservaRua').value.trim();
             const numero = document.getElementById('reservaNumero').value.trim();
 
             if (nome.length < 3) {
-                alert('Online: informe um nome de exemplo.');
+                alert('Informe seu nome completo.');
                 return;
             }
-            if (cpf.length !== 11) {
-                alert('Online: informe um CPF de exemplo (11 dígitos).');
+            if (cpf.length !== 11 || !validarCPF(cpf)) {
+                alert('Informe um CPF válido.');
                 return;
             }
-            if (tel.length < 8) {
-                alert('Online: informe um telefone de exemplo.');
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Informe um e-mail válido.');
+                return;
+            }
+            if (tel.replace(/\D/g, '').length < 10) {
+                alert('Informe um telefone válido.');
                 return;
             }
             if (rua.length < 3 || numero.length === 0) {
-                alert('Online: informe o nome da rua e o número da casa.');
+                alert('Informe o endereço de entrega.');
                 return;
             }
 
             const valor = reservaAtual ? reservaAtual.preco : 97.0;
-            await criarPixVizzionDemo(valor, nome, cpf);
-            const pix = gerarPixFicticio(valor, nome, cpf);
-            document.getElementById('pixCode').textContent = pix;
-            desenharQrFicticio('DEMO-NUNCA-PAGAR-' + pix);
-            ocultarCaixa('pagamentoSection');
-            mostrarCaixa('pixSection');
+            setLoading(btn, true, 'Gerando PIX...');
+
+            try {
+                const data = await criarPixVizzion(valor, {
+                    nome: nome,
+                    cpf: cpf,
+                    email: email,
+                    tel: tel,
+                    rua: rua,
+                    numero: numero
+                });
+
+                document.getElementById('pixCode').textContent = data.pix.code;
+
+                const pixImage = document.getElementById('pixImage');
+                if (data.pix.image) {
+                    pixImage.src = data.pix.image;
+                    pixImage.style.display = 'block';
+                } else if (data.pix.base64) {
+                    pixImage.src = data.pix.base64.startsWith('data:')
+                        ? data.pix.base64
+                        : 'data:image/png;base64,' + data.pix.base64;
+                    pixImage.style.display = 'block';
+                }
+
+                document.getElementById('pixStatusBox').className = 'br-message info';
+                document.getElementById('pixStatusText').textContent =
+                    'Aguardando pagamento. ' + (data.pix.expiresAt ? 'Expira em ' + new Date(data.pix.expiresAt).toLocaleString('pt-BR') + '.' : '');
+
+                ocultarCaixa('pagamentoSection');
+                mostrarCaixa('pixSection');
+                document.getElementById('pixSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                if (data.identifier) {
+                    iniciarMonitoramentoPix(data.identifier);
+                }
+            } catch (err) {
+                console.error('Erro ao gerar PIX VizzionPay:', err);
+                alert('Não foi possível gerar o PIX. ' + err.message + '\n\nVerifique se o backend está publicado e se as chaves VizzionPay estão configuradas no servidor.');
+            } finally {
+                setLoading(btn, false, 'Continuar para pagamento PIX');
+            }
         });
     }
 });
 
 // ---------------------------------------------------------------------
 // ---------------------------------------------------------------------
-console.log('Gás do Online: pagamentos devem ser processados exclusivamente pelo backend seguro.');
+console.log('Gás do Online: PIX VizzionPay integrado via backend seguro.');
 </script>
 
 <script>
